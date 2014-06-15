@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['src/**/*.js'],
-        tasks: ['jshint', 'browserify']
+        tasks: ['jshint']
       },
       compass: {
         files: ['src/**/*.scss'],
@@ -39,13 +39,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    browserify: {
-      dist: {
-        files: {
-          'dist/js/client.js': ['src/**/*.js']
-        }
-      }
-    },
     compass: {
       dist: {
         options: {
@@ -56,25 +49,25 @@ module.exports = function(grunt) {
     },
     concat: {
       css: {
-        src: ['dist/**/*.css'],
-        dest: 'static/css/style.css'
+        src: ['dist/css/*.css'],
+        dest: 'dist/style.css'
       },
       js: {
-        src: ['dist/**/*.js'],
-        dest: 'static/js/client.js'
+        src: ['dist/js/*.js'],
+        dest: 'dist/client.js'
       }
     },
     cssmin: {
       minify: {
         files: {
-          'static/css/style.min.css': ['static/css/style.css']
+          'dist/style.min.css': ['dist/style.css']
         }
       }
     },
     uglify: {
       minify: {
         files: {
-          'static/js/client.min.js': ['static/js/client.js']
+          'dist/client.min.js': ['dist/client.js']
         }
       }
     },
@@ -90,15 +83,15 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('build', ['browserify', 'compass', 'concat', 'connect', 'watch']);
-  grunt.registerTask('release', ['browserify', 'compass', 'concat', 'cssmin', 'uglify', 'connect', 'watch']);
+  grunt.registerTask('build', ['compass', 'concat', 'connect', 'watch']);
+  grunt.registerTask('serve', ['compass', 'concat', 'cssmin', 'uglify', 'connect', 'watch']);
   grunt.registerTask('default', ['jshint', 'build']);
-  grunt.registerTask('test', ['browserify', 'jshint', 'mochaTest']);
+  grunt.registerTask('test', ['jshint', 'mochaTest']);
 };
